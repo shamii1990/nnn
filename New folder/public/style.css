@@ -1,0 +1,5 @@
+body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+header h1 { margin: 0; }
+ul { list-style: none; padding: 0; }
+li { margin: 8px 0; }
+a { color: #0366d6; }

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to JPG - PDFMaster Pro</title>
+    <meta name="description" content="Convert PDF to JPG images. 100% free online tool.">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-crown"></i> PDFMaster Pro
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="merge-pdf.html">Merge PDF</a>
+                <a href="split-pdf.html">Split PDF</a>
+                <a href="compress-pdf.html">Compress PDF</a>
+                <a href="pdf-to-text.html">PDF to Text</a>
+                <a href="images-to-pdf.html">Images to PDF</a>
+                <a href="jpg-to-pdf.html">JPG to PDF</a>
+                <a href="pdf-to-jpg.html" class="active">PDF to JPG</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="tool-hero">
+        <div class="tool-hero-content">
+            <h1><i class="fas fa-file-image"></i> PDF to JPG</h1>
+            <p>Convert PDF pages to high-quality JPG images</p>
+            <div class="tool-features">
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>100% Free</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure Processing</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <span>Fast Conversion</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tool-container">
+        <div class="converter-box">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-file-pdf" style="font-size: 4rem; color: #667eea; margin-bottom: 1rem;"></i>
+                <h3>Upload PDF File</h3>
+                <p>Drag & drop your PDF file or click to browse</p>
+                <p class="file-info">Supports: PDF files up to 50MB</p>
+                <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" style="margin-top: 1.5rem;">
+                    <i class="fas fa-folder-open"></i> Choose PDF File
+                </button>
+            </div>
+
+            <div id="fileInfo" style="display: none; margin-top: 2rem; text-align: center;">
+                <div class="file-preview">
+                    <i class="fas fa-file-pdf" style="font-size: 3rem; color: #667eea;"></i>
+                    <div class="file-details">
+                        <h4 id="fileName"></h4>
+                        <p id="fileSize"></p>
+                        <p id="pageCount"></p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="resetTool()" style="margin-left: 1rem;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" id="processBtn" style="display: none; font-size: 1.2rem; padding: 15px 30px;">
+                    <i class="fas fa-sync-alt"></i> Convert to JPG
+                </button>
+            </div>
+
+            <div id="progress" style="display: none; text-align: center; margin-top: 2rem;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Processing...</p>
+            </div>
+
+            <div id="result" style="display: none; text-align: center; margin-top: 2rem; padding: 2rem; background: #10b981; color: white; border-radius: 10px;">
+                <h3><i class="fas fa-check-circle"></i> Conversion Complete!</h3>
+                <p id="resultMessage"></p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" id="downloadLink" class="btn" style="background: white; color: #10b981; margin: 0.5rem;">
+                        <i class="fas fa-download"></i> Download JPG Images (ZIP)
+                    </a>
+                    <button class="btn btn-secondary" onclick="resetTool()" style="background: rgba(255,255,255,0.2); color: white; margin: 0.5rem;">
+                        <i class="fas fa-redo"></i> Convert Another File
+                    </button>
+                </div>
+            </div>
+
+            <div id="error" style="display: none; text-align: center; margin-top: 2rem; padding: 2rem; background: #ef4444; color: white; border-radius: 10px;">
+                <h3><i class="fas fa-exclamation-triangle"></i> Conversion Failed</h3>
+                <p id="errorMessage"></p>
+                <button class="btn" onclick="resetTool()" style="background: white; color: #ef4444; margin-top: 1rem;">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-info">
+            <h3>How to Convert PDF to JPG</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Upload PDF</h4>
+                        <p>Select your PDF file from computer</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Convert</h4>
+                        <p>Click convert to process your file</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Download</h4>
+                        <p>Get your JPG images in a ZIP file</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Get DOM elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const pageCount = document.getElementById('pageCount');
+        const processBtn = document.getElementById('processBtn');
+        const progress = document.getElementById('progress');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const result = document.getElementById('result');
+        const resultMessage = document.getElementById('resultMessage');
+        const downloadLink = document.getElementById('downloadLink');
+        const error = document.getElementById('error');
+        const errorMessage = document.getElementById('errorMessage');
+
+        let currentFile = null;
+
+        // File input change handler
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#f8f9fa';
+            uploadArea.style.borderColor = '#667eea';
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '';
+            uploadArea.style.borderColor = '';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '';
+            uploadArea.style.borderColor = '';
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                if (file.type === 'application/pdf') {
+                    handleFile(file);
+                } else {
+                    alert('Please drop a PDF file');
+                }
+            }
+        });
+
+        // Click on upload area to trigger file input
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        function handleFile(file) {
+            console.log('File selected:', file.name);
+            
+            if (file.type !== 'application/pdf') {
+                alert('Please select a PDF file');
+                return;
+            }
+
+            currentFile = file;
+            
+            // Update file info display
+            fileName.textContent = file.name;
+            fileSize.textContent = `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+            pageCount.textContent = 'Pages: Will be detected during conversion';
+            
+            // Show file info and process button
+            fileInfo.style.display = 'block';
+            processBtn.style.display = 'block';
+            
+            // Hide other sections
+            result.style.display = 'none';
+            error.style.display = 'none';
+            progress.style.display = 'none';
+            
+            console.log('File info displayed, process button shown');
+        }
+
+        // Process button click handler
+        processBtn.addEventListener('click', async function() {
+            if (!currentFile) {
+                alert('Please select a PDF file first.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', currentFile);
+
+            // UI updates
+            processBtn.style.display = 'none';
+            progress.style.display = 'block';
+            updateProgress(10, 'Uploading PDF file...');
+
+            try {
+                console.log('Sending request to server...');
+                const response = await fetch('/api/pdf-to-jpg', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `Server error: ${response.status}`);
+                }
+
+                // Get the zip file
+                const blob = await response.blob();
+                console.log('Received blob size:', blob.size);
+                
+                if (blob.size === 0) {
+                    throw new Error('Received empty response from server');
+                }
+
+                const url = URL.createObjectURL(blob);
+                const pagesProcessed = response.headers.get('X-Pages-Processed') || 'all';
+
+                // Show success
+                progress.style.display = 'none';
+                result.style.display = 'block';
+                resultMessage.textContent = `Successfully converted ${pagesProcessed} pages to JPG images!`;
+                downloadLink.href = url;
+                downloadLink.download = currentFile.name.replace('.pdf', '') + '-images.zip';
+
+                // Scroll to result
+                result.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Conversion error:', error);
+                progress.style.display = 'none';
+                error.style.display = 'block';
+                errorMessage.textContent = error.message || 'Conversion failed. Please try with a different PDF file.';
+                
+                // Scroll to error
+                error.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        function updateProgress(percent, text) {
+            progressFill.style.width = percent + '%';
+            progressText.textContent = text;
+        }
+
+        function resetTool() {
+            currentFile = null;
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            processBtn.style.display = 'none';
+            progress.style.display = 'none';
+            result.style.display = 'none';
+            error.style.display = 'none';
+            
+            // Reset upload area
+            uploadArea.style.background = '';
+            uploadArea.style.borderColor = '';
+        }
+
+        // Initialize tool on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PDF to JPG tool initialized');
+            resetTool();
+        });
+    </script>
+
+    <style>
+        .file-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #667eea;
+        }
+
+        .file-details {
+            text-align: left;
+        }
+
+        .file-details h4 {
+            margin: 0;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .file-details p {
+            margin: 0.25rem 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .tool-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .upload-area {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .tool-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .file-preview {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .file-details {
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+</html>
